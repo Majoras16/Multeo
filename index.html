@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+<title>Multeo Project by @Majoras16</title>
+<style>
+body {
+ margin: 0px;
+ padding: 0px;
+}
+#yt_p {
+ width: 100%;
+ height: 100%;
+ border: none;
+ z-index: 10;
+}
+#twitch_p {
+ width: 100%;
+ height: auto;
+ border: none;
+ z-index: 12;
+ position: absolute;
+}
+#win_rotate {
+ position: absolute;
+ z-index: 11;
+ width: 50px;
+ height: 50px;
+ border: none;
+ border-radius: 50px;
+ margin: 0px;
+ padding: 0px;
+ text-align: center;
+ background: rgb(150,150,150);
+ font-size: 20px;
+}
+</style>
+<script src="twitchembed.js"></script>
+<meta charset="utf-8">
+</head>
+
+<body>
+ <iframe id="yt_p"></iframe>
+ <div id="twitch_p"></div>
+ <button id="win_rotate" onClick="rotate();">🔄</button>
+</body>
+
+<script>
+var yt = {};
+var twitch = {};
+var rotated = 0;
+var win_rotate = document.querySelector("#win_rotate");
+var win_rotate_space = 25;
+
+yt.player = document.querySelector("#yt_p");
+yt.play = function(vid) {
+ var id = "https://www.youtube.com/embed/"+ vid.replace(/(.*?)?v=(.*?)/g,"$2")+"?rel=0&autoplay=1&playsinline=0&controls=1&fs=1&showinfo=0";
+ yt.player.src = id;
+}
+
+twitch.player = document.querySelector("#twitch_p");
+twitch.play = function(chan) {
+ new Twitch.Embed(twitch.player,{
+  channel: chan,
+  width: "35%"
+ });
+}
+
+function resize() {
+ yt.player.style.position = "";
+ yt.player.style.width = window.innerWidth+"px";
+ yt.player.style.height = (window.innerHeight+1)+"px";
+ win_rotate.style.bottom = win_rotate_space+"px";
+ win_rotate.style.left = win_rotate_space+"px";
+}
+
+function resizeRotated() {
+ yt.player.style.width = (window.innerHeight+1)+"px";
+ yt.player.style.height = (window.innerWidth+1)+"px";
+ yt.player.style.position = "absolute";
+ yt.player.style.left = "-372px";
+ yt.player.style.top = "-188px";
+ win_rotate.style.left = win_rotate_space-372+"px";
+ win_rotate.style.bottom = win_rotate_space-188+"px";
+}
+
+function rotate() {
+ if(rotated === 0) {
+  document.body.style.transform = "rotate(-90deg)";
+  resizeRotated();
+  rotated = 1;
+ } else {
+  document.body.style.transform = "rotate(0deg)";
+  resize();
+  rotated = 0;
+ }
+}
+
+
+/*****************************************/
+
+
+
+resize();
+
+yt.play("https://www.youtube.com/watch?v=Q7YKVsu0GTk");
+twitch.play("theguill84");
+</script>
+</html>
